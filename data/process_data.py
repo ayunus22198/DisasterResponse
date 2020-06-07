@@ -6,6 +6,9 @@ from sqlalchemy import create_engine
 def clean_categories(df):
     pass
 
+'''
+Description: Load data
+'''
 def load_data(messages_filepath, categories_filepath):
     df_msg = pd.read_csv(messages_filepath)
     df_ctgry = pd.read_csv(categories_filepath)
@@ -14,7 +17,9 @@ def load_data(messages_filepath, categories_filepath):
     df = pd.concat(frames, axis = 1)
     return df
 
-
+'''
+Description: Cleans data and renames columns, then concatenates to form one dataframe
+'''
 def clean_data(df):
     cats = df['categories'].str.split(";", expand = True)
     cols = ['related', 'request', 'offer', 'aid_related', 'medical_help', 'medical_products', 'search_and_rescue', 'security', 'military', 'child_alone', 'water', 'food', 'shelter', 'clothing', 'money', 'missing_people', 'refugees', 'death', 'other_aid', 'infrastructure_related', 'transport', 'buildings', 'electricity', 'tools', 'hospitals', 'shops', 'aid_centers', 'other_infrastructure', 'weather_related', 'floods', 'storm', 'fire', 'earthquake', 'cold', 'other_weather', 'direct_report'] 
@@ -37,7 +42,9 @@ def clean_data(df):
     return df
 
 
-
+'''
+Description: Save database in file system
+'''
 def save_data(df, database_filename):
     df.drop_duplicates(inplace = True)
     engine = create_engine('sqlite:///' + database_filename)

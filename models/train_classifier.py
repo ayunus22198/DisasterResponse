@@ -30,7 +30,9 @@ wn = nltk.WordNetLemmatizer()
 ps = nltk.PorterStemmer()
 stopwords = set(stopwords.words('english')) 
 
-
+'''
+Descritption: Load data from db.
+'''
 def load_data(database_filepath):
     engine = create_engine('sqlite:///' + database_filepath)
     df = pd.read_sql_table("Disasters",con=engine)
@@ -38,7 +40,9 @@ def load_data(database_filepath):
     X = df['message'][0:(int) (length)]
     y = df[df.columns[4:]][0:(int) (length)]
     return X, y, y.columns
-
+'''
+Description: Set of functions for tokenizing and lemmatizing text
+'''
 def lemmatization(txt):
     text = [wn.lemmatize(word) for word in txt]
     return text
@@ -52,7 +56,9 @@ def clean_text(txt):
 def tokenize(text):
     return clean_text(text)
 
-
+'''
+Description: Build model with pipeline
+'''
 def build_model():
     pipeline = Pipeline([
         ('vect', CountVectorizer(tokenizer=tokenize)),
@@ -69,7 +75,9 @@ def build_model():
 def evaluate_model(model, X_test, Y_test, category_names):
     pass
 
-
+'''
+Description: Saves model
+'''
 def save_model(model, model_filepath):
     pickle.dump(model, open(model_filepath, 'wb'))
 

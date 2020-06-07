@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
+from plotly.graph_objs import Bar, Pie
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 nltk.download('punkt')
@@ -43,9 +43,10 @@ def index():
     # TODO: Below is an example - modify to extract data for your own visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
-    
+    colors = ['#d32c58', '#f9b1ee', '#b7f9b1']
     # create visuals
     # TODO: Below is an example - modify to create your own visuals
+
     graphs = [
         {
             'data': [
@@ -64,6 +65,17 @@ def index():
                     'title': "Genre"
                 }
             }
+        }, {
+            'data': [
+                Pie(
+                    labels=genre_names,
+                    values=genre_counts, 
+                    hoverinfo = 'label+percent', 
+                    textinfo = 'value', 
+                    textfont = dict(size = 25), 
+                    marker = dict(colors = colors, line = dict(color = '#000000', width = 3))
+                )
+            ],
         }
     ]
     
